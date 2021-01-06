@@ -20,42 +20,69 @@ import os
 app = Flask(__name__)
 @app.route('/')
 def hello_world():
-  return 'Hello from Flask!'
-
-#/usr/bin/chromedriver
+  return 'Hello from Flask!'@app.route('/api/fetchbill/', methods=[ 'POST'])
 
 
-
-chrome_optionss = Options()
-chrome_optionss.add_argument("--disable-extensions")
-chrome_optionss.add_argument("--headless")
-chrome_optionss.add_argument("--disable-gpu")
-chrome_optionss.add_argument("disable-infobars")
-#chrome_optionss.add_experimental_option('prefs', prefs)
-driver = webdriver.Chrome(executable_path="/usr/bin/chromedriver",chrome_options=chrome_optionss)
-
-
-#driver.get()
 @app.route("/api/waterbill",methods=['POST'])
 def waterbill():
-    
-    waterbill={}  
-    driver.get("https://rajasthan.gov.in/SPRAY/PHED.aspx")
+       prefs = {'profile.default_content_setting_values': {'cookies': 2, 'images':>
+            'plugins': 2, 'popups': 2, 'geolocation': 2,
+            'notifications': 2, 'auto_select_certificate': 2, 'fullscreen': 2,
+            'mouselock': 2, 'mixed_script': 2, 'media_stream': 2,
+            'media_stream_mic': 2, 'media_stream_camera': 2, 'protocol_handlers>
+            'ppapi_broker': 2, 'automatic_downloads': 2, 'midi_sysex': 2,
+            'push_messaging': 2, 'ssl_cert_decisions': 2, 'metro_switch_to_desk>
+            'protected_media_identifier': 2, 'app_banner': 2, 'site_engagement'>
+            'durable_storage': 2}}
+
+    chrome_optionss = Options()
+    chrome_optionss.add_argument("--disable-extensions")
+    chrome_optionss.add_argument("--headless")
+    prefs = {'profile.default_content_setting_values': {'cookies': 2, 'images':>
+            'plugins': 2, 'popups': 2, 'geolocation': 2,
+            'notifications': 2, 'auto_select_certificate': 2, 'fullscreen': 2,
+            'mouselock': 2, 'mixed_script': 2, 'media_stream': 2,
+            'media_stream_mic': 2, 'media_stream_camera': 2, 'protocol_handlers>
+            'ppapi_broker': 2, 'automatic_downloads': 2, 'midi_sysex': 2,
+            'push_messaging': 2, 'ssl_cert_decisions': 2, 'metro_switch_to_desk>
+            'protected_media_identifier': 2, 'app_banner': 2, 'site_engagement'>
+            'durable_storage': 2}}
+
+    chrome_optionss = Options()
+    chrome_optionss.add_argument("--disable-extensions")
+    chrome_optionss.add_argument("--headless")
+ prefs = {'profile.default_content_setting_values': {'cookies': 2, 'images': 2,  
+            'plugins': 2, 'popups': 2, 'geolocation': 2, 
+            'notifications': 2, 'auto_select_certificate': 2, 'fullscreen': 2, 
+            'mouselock': 2, 'mixed_script': 2, 'media_stream': 2, 
+            'media_stream_mic': 2, 'media_stream_camera': 2, 'protocol_handlers': 2, 
+            'ppapi_broker': 2, 'automatic_downloads': 2, 'midi_sysex': 2, 
+            'push_messaging': 2, 'ssl_cert_decisions': 2, 'metro_switch_to_desktop': 2, 
+            'protected_media_identifier': 2, 'app_banner': 2, 'site_engagement': 2, 
+            'durable_storage': 2}}
+
+    chrome_optionss = Options()
+    chrome_optionss.add_argument("--disable-extensions")
+    chrome_optionss.add_argument("--headless")
+    chrome_optionss.add_argument("--disable-gpu")
+    chrome_optionss.add_argument("disable-infobars")
+    #chrome_optionss.add_experimental_option('prefs', prefs)
+    driver = webdriver.Chrome(executable_path="/usr/bin/chromedriver",chrome_options=chrome_optionss)
+    driver.get('https://rajasthan.gov.in/SPPAY/PHED.aspx')
     actions = ActionChains(driver)       
     driver.implicitly_wait(10)
     select_phed=driver.find_element_by_xpath("/html/body/form/div[3]/div/div/div/div/div/div/div[3]/table/tbody/tr[2]/td/div/div[1]/div[1]/div[2]/table/tbody/tr[1]/td[2]/div/select")
     opt=Select(select_phed)
     actions.double_click(opt.select_by_index(1)).perform()
+                
+    driver.find_element_by_xpath("/html/body/form/div[3]/div/div/div/div/div/div/div[3]/table/tbody/tr[2]/td/div/div[1]/div[1]/div[2]/table/tbody/tr[2]/td[2]/input").send_keys(request.form['knumber'])
     driver.find_element_by_xpath("/html/body/form/div[3]/div/div/div/div/div/div/div[3]/table/tbody/tr[2]/td/div/div[1]/div[1]/div[2]/table/tbody/tr[3]/td[2]/input").send_keys("7665196615")
     driver.find_element_by_xpath("/html/body/form/div[3]/div/div/div/div/div/div/div[3]/table/tbody/tr[2]/td/div/div[1]/div[1]/div[2]/table/tbody/tr[4]/td[2]/input").send_keys("admin@ikedapl.com")
-               
-    driver.find_element_by_xpath("/html/body/form/div[3]/div/div/div/div/div/div/div[3]/table/tbody/tr[2]/td/div/div[1]/div[1]/div[2]/table/tbody/tr[2]/td[2]/input").send_keys(request.form['knumber'])
     driver.find_element_by_xpath("/html/body/form/div[3]/div/div/div/div/div/div/div[3]/table/tbody/tr[2]/td/div/div[1]/div[1]/div[2]/div/input[1]").click()
     customer_name = WebDriverWait(driver, 5).until(
                 EC.element_to_be_clickable((By.XPATH, "/html/body/form/div[3]/div/div/div/div/div/div/div[3]/table/tbody/tr[2]/td/div/div[2]/div/div[2]/div[2]/div[1]/div[2]")))
-    driver.find_element_by_xpath("/html/body/form/div[3]/div/div/div/div/div/div/div[3]/table/tbody/tr[2]/td/div/div[1]/div[1]/div[2]/table/tbody/tr[2]/td[2]/input").clear()
+
     customer_name=customer_name.text
-    accountnum=driver.find_element_by_xpath("/html/body/form/div[3]/div/div/div/div/div/div/div[3]/table/tbody/tr[2]/td/div/div[2]/div/div[2]/div[2]/div[4]/div[2]").text
     phed=driver.find_element_by_xpath("/html/body/form/div[3]/div/div/div/div/div/div/div[3]/table/tbody/tr[2]/td/div/div[2]/div/div[2]/div[2]/div[3]/div[2]").text
     billmonth=driver.find_element_by_xpath("/html/body/form/div[3]/div/div/div/div/div/div/div[3]/table/tbody/tr[2]/td/div/div[2]/div/div[2]/div[2]/div[5]/div[2]").text
     billamount=driver.find_element_by_xpath("/html/body/form/div[3]/div/div/div/div/div/div/div[3]/table/tbody/tr[2]/td/div/div[2]/div/div[2]/div[2]/div[7]/div[2]").text
@@ -67,15 +94,12 @@ def waterbill():
     waterbill['PHED']=phed
     waterbill['Bill Month']=billmonth
     waterbill['Bill Amount']=billamount
-    waterbill['Account Number']=accountnum
+    
     waterbill['Bill Year']=billyear
     waterbill['Bill Due Date']=billduedate
-   
-    return jsonify(waterbill)
-    waterbill.clear()
-    driver.close()
-  driver.get("https://rajasthan.gov.in/SPRAY/PHED.aspx")	
     
+    return jsonify(waterbill)
+
 
 if __name__ == '__main__':
   app.run(threaded=True)
